@@ -1,11 +1,10 @@
 const SHA256 = require("crypto-js/sha256");
-
-class Block {
-  constructor(index, timestamp, data, previousHash = " ") {
+class CryptoBlock {
+  constructor(index, timestamp, data, precedingHash = " ") {
     this.index = index;
     this.timestamp = timestamp;
     this.data = data;
-    this.previousHash = previousHash;
+    this.precedingHash = precedingHash;
     this.hash = this.computeHash();
     this.nonce = 0;
   }
@@ -13,7 +12,7 @@ class Block {
   computeHash() {
     return SHA256(
       this.index +
-        this.previousHash +
+        this.precedingHash +
         this.timestamp +
         JSON.stringify(this.data) +
         this.nonce
@@ -30,22 +29,21 @@ class Block {
   }
 }
 
-class BlockChain {
+class CryptoBlockchain {
   constructor() {
-    this.blockchain = [this.genesisBlock()];
+    this.blockchain = [this.startGenesisBlock()];
     this.difficulty = 4;
   }
-  genesisBlock() {
-    return new Block(0, "01/01/2020", "Initial Block in the Chain", "0");
+  startGenesisBlock() {
+    return new CryptoBlock(0, "01/01/2020", "Initial Block in the Chain", "0");
   }
 
-  getLatestBlock() {
+  obtainLatestBlock() {
     return this.blockchain[this.blockchain.length - 1];
   }
-
   addNewBlock(newBlock) {
-    newBlock.previousHash = this.getLatestBlock().hash;
-    // newBlock.hash = newBlock.computeHash();
+    newBlock.precedingHash = this.obtainLatestBlock().hash;
+    //newBlock.hash = newBlock.computeHash();
     newBlock.proofOfWork(this.difficulty);
     this.blockchain.push(newBlock);
   }
@@ -64,22 +62,23 @@ class BlockChain {
   }
 }
 
-let samsonCoin = new BlockChain();
-console.log("samsonCoin is  mining in progress....");
-samsonCoin.addNewBlock(
-  new Block(1, "01/05/2020", {
-    sender: "Samson",
-    recipient: "Malte",
-    amount: 1000,
-  })
-);
-samsonCoin.addNewBlock(
-  new Block(2, "01/06/2020", {
-    sender: "Malte",
-    recipient: "Samson",
-    amount: 1000,
+let smashingCoin = new CryptoBlockchain();
+
+console.log("smashingCoin mining in progress....");
+smashingCoin.addNewBlock(
+  new CryptoBlock(1, "01/06/2020", {
+    sender: "Iris Ljesnjanin",
+    recipient: "Cosima Mielke",
+    quantity: 50,
   })
 );
 
-console.log(JSON.stringify(samsonCoin, null, 4));
-console.log(samsonCoin.checkChainValidity());
+smashingCoin.addNewBlock(
+  new CryptoBlock(2, "01/07/2020", {
+    sender: "Vitaly Friedman",
+    recipient: "Ricardo Gimenes",
+    quantity: 100,
+  })
+);
+
+console.log(JSON.stringify(smashingCoin, null, 4));
