@@ -26,7 +26,7 @@ class Blockchain {
     }
 
     createGenesisBlock() {
-        return new Block(0, "01/01/2020", "Genesis Black", 0);
+        return new Block(0, "01/01/2020", "Genesis Black", "8");
     }
 
     getLatestBlock() {
@@ -38,7 +38,7 @@ class Blockchain {
         this.chain.push(newBlock);
     }
     isChainValid() {
-        for (let i = 0; i < this.chain.length; i++) {
+        for (let i = 1; i < this.chain.length; i++) {
             const currentBlock = this.chain[i];
             const previousBlock = this.chain[i - 1];
 
@@ -56,9 +56,12 @@ class Blockchain {
 }
 
 let samsonCoin = new Blockchain();
-samsonCoin.addBlock(new Block(1, "10/10/2020", { CashAmount: 100 }));
-samsonCoin.addBlock(new Block(1, "18/10/2020", { CashAmount: 400 }));
-samsonCoin.addBlock(new Block(1, "18/10/2020", { CashAmount: 200 }));
+
+samsonCoin.addBlock(new Block(1, "10/08/2020", { amount: 199 }));
+
+samsonCoin.addBlock(new Block(2, "01/09/2020", { amount: 199 }));
+
+console.log(samsonCoin.chain);
 
 // console.log(JSON.stringify(samsonCoin, null, 4));
 console.log("is this block chain valid? : " + samsonCoin.isChainValid());
